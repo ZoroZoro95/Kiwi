@@ -1,0 +1,601 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3500552C2F222129007F05F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3500552B2F222129007F05F2 /* AppDelegate.swift */; };
+		3500552E2F222129007F05F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3500552D2F222129007F05F2 /* ViewController.swift */; };
+		350055302F22212A007F05F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3500552F2F22212A007F05F2 /* Assets.xcassets */; };
+		350055332F22212A007F05F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 350055312F22212A007F05F2 /* Main.storyboard */; };
+		3500553E2F22212A007F05F2 /* TrackpadCanvasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3500553D2F22212A007F05F2 /* TrackpadCanvasTests.swift */; };
+		350055482F22212A007F05F2 /* TrackpadCanvasUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350055472F22212A007F05F2 /* TrackpadCanvasUITests.swift */; };
+		3500554A2F22212A007F05F2 /* TrackpadCanvasUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350055492F22212A007F05F2 /* TrackpadCanvasUITestsLaunchTests.swift */; };
+		350055572F222590007F05F2 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350055562F222590007F05F2 /* CanvasView.swift */; };
+		3581CD0E2F6A785900476BC9 /* GridModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3581CD0D2F6A785900476BC9 /* GridModels.swift */; };
+		359148802F41B3DC002B4358 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591487F2F41B3DC002B4358 /* Symbol.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3500553A2F22212A007F05F2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 350055202F222129007F05F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 350055272F222129007F05F2;
+			remoteInfo = TrackpadCanvas;
+		};
+		350055442F22212A007F05F2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 350055202F222129007F05F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 350055272F222129007F05F2;
+			remoteInfo = TrackpadCanvas;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		350055282F222129007F05F2 /* TrackpadCanvas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackpadCanvas.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3500552B2F222129007F05F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3500552D2F222129007F05F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3500552F2F22212A007F05F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		350055322F22212A007F05F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		350055342F22212A007F05F2 /* TrackpadCanvas.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TrackpadCanvas.entitlements; sourceTree = "<group>"; };
+		350055392F22212A007F05F2 /* TrackpadCanvasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackpadCanvasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3500553D2F22212A007F05F2 /* TrackpadCanvasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadCanvasTests.swift; sourceTree = "<group>"; };
+		350055432F22212A007F05F2 /* TrackpadCanvasUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackpadCanvasUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		350055472F22212A007F05F2 /* TrackpadCanvasUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadCanvasUITests.swift; sourceTree = "<group>"; };
+		350055492F22212A007F05F2 /* TrackpadCanvasUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadCanvasUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		350055562F222590007F05F2 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		3581CD0D2F6A785900476BC9 /* GridModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridModels.swift; sourceTree = "<group>"; };
+		3591487F2F41B3DC002B4358 /* Symbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbol.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		350055252F222129007F05F2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		350055362F22212A007F05F2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		350055402F22212A007F05F2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3500551F2F222129007F05F2 = {
+			isa = PBXGroup;
+			children = (
+				3581CD0D2F6A785900476BC9 /* GridModels.swift */,
+				3591487F2F41B3DC002B4358 /* Symbol.swift */,
+				350055562F222590007F05F2 /* CanvasView.swift */,
+				3500552A2F222129007F05F2 /* TrackpadCanvas */,
+				3500553C2F22212A007F05F2 /* TrackpadCanvasTests */,
+				350055462F22212A007F05F2 /* TrackpadCanvasUITests */,
+				350055292F222129007F05F2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		350055292F222129007F05F2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				350055282F222129007F05F2 /* TrackpadCanvas.app */,
+				350055392F22212A007F05F2 /* TrackpadCanvasTests.xctest */,
+				350055432F22212A007F05F2 /* TrackpadCanvasUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3500552A2F222129007F05F2 /* TrackpadCanvas */ = {
+			isa = PBXGroup;
+			children = (
+				3500552B2F222129007F05F2 /* AppDelegate.swift */,
+				3500552D2F222129007F05F2 /* ViewController.swift */,
+				3500552F2F22212A007F05F2 /* Assets.xcassets */,
+				350055312F22212A007F05F2 /* Main.storyboard */,
+				350055342F22212A007F05F2 /* TrackpadCanvas.entitlements */,
+			);
+			path = TrackpadCanvas;
+			sourceTree = "<group>";
+		};
+		3500553C2F22212A007F05F2 /* TrackpadCanvasTests */ = {
+			isa = PBXGroup;
+			children = (
+				3500553D2F22212A007F05F2 /* TrackpadCanvasTests.swift */,
+			);
+			path = TrackpadCanvasTests;
+			sourceTree = "<group>";
+		};
+		350055462F22212A007F05F2 /* TrackpadCanvasUITests */ = {
+			isa = PBXGroup;
+			children = (
+				350055472F22212A007F05F2 /* TrackpadCanvasUITests.swift */,
+				350055492F22212A007F05F2 /* TrackpadCanvasUITestsLaunchTests.swift */,
+			);
+			path = TrackpadCanvasUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		350055272F222129007F05F2 /* TrackpadCanvas */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3500554D2F22212A007F05F2 /* Build configuration list for PBXNativeTarget "TrackpadCanvas" */;
+			buildPhases = (
+				350055242F222129007F05F2 /* Sources */,
+				350055252F222129007F05F2 /* Frameworks */,
+				350055262F222129007F05F2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrackpadCanvas;
+			productName = TrackpadCanvas;
+			productReference = 350055282F222129007F05F2 /* TrackpadCanvas.app */;
+			productType = "com.apple.product-type.application";
+		};
+		350055382F22212A007F05F2 /* TrackpadCanvasTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 350055502F22212A007F05F2 /* Build configuration list for PBXNativeTarget "TrackpadCanvasTests" */;
+			buildPhases = (
+				350055352F22212A007F05F2 /* Sources */,
+				350055362F22212A007F05F2 /* Frameworks */,
+				350055372F22212A007F05F2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3500553B2F22212A007F05F2 /* PBXTargetDependency */,
+			);
+			name = TrackpadCanvasTests;
+			productName = TrackpadCanvasTests;
+			productReference = 350055392F22212A007F05F2 /* TrackpadCanvasTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		350055422F22212A007F05F2 /* TrackpadCanvasUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 350055532F22212A007F05F2 /* Build configuration list for PBXNativeTarget "TrackpadCanvasUITests" */;
+			buildPhases = (
+				3500553F2F22212A007F05F2 /* Sources */,
+				350055402F22212A007F05F2 /* Frameworks */,
+				350055412F22212A007F05F2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				350055452F22212A007F05F2 /* PBXTargetDependency */,
+			);
+			name = TrackpadCanvasUITests;
+			productName = TrackpadCanvasUITests;
+			productReference = 350055432F22212A007F05F2 /* TrackpadCanvasUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		350055202F222129007F05F2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1520;
+				LastUpgradeCheck = 1520;
+				TargetAttributes = {
+					350055272F222129007F05F2 = {
+						CreatedOnToolsVersion = 15.2;
+					};
+					350055382F22212A007F05F2 = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = 350055272F222129007F05F2;
+					};
+					350055422F22212A007F05F2 = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = 350055272F222129007F05F2;
+					};
+				};
+			};
+			buildConfigurationList = 350055232F222129007F05F2 /* Build configuration list for PBXProject "TrackpadCanvas" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3500551F2F222129007F05F2;
+			productRefGroup = 350055292F222129007F05F2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				350055272F222129007F05F2 /* TrackpadCanvas */,
+				350055382F22212A007F05F2 /* TrackpadCanvasTests */,
+				350055422F22212A007F05F2 /* TrackpadCanvasUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		350055262F222129007F05F2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				350055302F22212A007F05F2 /* Assets.xcassets in Resources */,
+				350055332F22212A007F05F2 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		350055372F22212A007F05F2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		350055412F22212A007F05F2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		350055242F222129007F05F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3500552E2F222129007F05F2 /* ViewController.swift in Sources */,
+				359148802F41B3DC002B4358 /* Symbol.swift in Sources */,
+				3500552C2F222129007F05F2 /* AppDelegate.swift in Sources */,
+				350055572F222590007F05F2 /* CanvasView.swift in Sources */,
+				3581CD0E2F6A785900476BC9 /* GridModels.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		350055352F22212A007F05F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3500553E2F22212A007F05F2 /* TrackpadCanvasTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3500553F2F22212A007F05F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3500554A2F22212A007F05F2 /* TrackpadCanvasUITestsLaunchTests.swift in Sources */,
+				350055482F22212A007F05F2 /* TrackpadCanvasUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3500553B2F22212A007F05F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 350055272F222129007F05F2 /* TrackpadCanvas */;
+			targetProxy = 3500553A2F22212A007F05F2 /* PBXContainerItemProxy */;
+		};
+		350055452F22212A007F05F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 350055272F222129007F05F2 /* TrackpadCanvas */;
+			targetProxy = 350055442F22212A007F05F2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		350055312F22212A007F05F2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				350055322F22212A007F05F2 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3500554B2F22212A007F05F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.7;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3500554C2F22212A007F05F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		3500554E2F22212A007F05F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TrackpadCanvas/TrackpadCanvas.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7W69DB4K56;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sid.TrackpadCanvas;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		3500554F2F22212A007F05F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TrackpadCanvas/TrackpadCanvas.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7W69DB4K56;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sid.TrackpadCanvas;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		350055512F22212A007F05F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7W69DB4K56;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.7;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sid.TrackpadCanvasTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrackpadCanvas.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TrackpadCanvas";
+			};
+			name = Debug;
+		};
+		350055522F22212A007F05F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7W69DB4K56;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.7;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sid.TrackpadCanvasTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrackpadCanvas.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TrackpadCanvas";
+			};
+			name = Release;
+		};
+		350055542F22212A007F05F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7W69DB4K56;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sid.TrackpadCanvasUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = TrackpadCanvas;
+			};
+			name = Debug;
+		};
+		350055552F22212A007F05F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7W69DB4K56;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sid.TrackpadCanvasUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = TrackpadCanvas;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		350055232F222129007F05F2 /* Build configuration list for PBXProject "TrackpadCanvas" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3500554B2F22212A007F05F2 /* Debug */,
+				3500554C2F22212A007F05F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3500554D2F22212A007F05F2 /* Build configuration list for PBXNativeTarget "TrackpadCanvas" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3500554E2F22212A007F05F2 /* Debug */,
+				3500554F2F22212A007F05F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		350055502F22212A007F05F2 /* Build configuration list for PBXNativeTarget "TrackpadCanvasTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				350055512F22212A007F05F2 /* Debug */,
+				350055522F22212A007F05F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		350055532F22212A007F05F2 /* Build configuration list for PBXNativeTarget "TrackpadCanvasUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				350055542F22212A007F05F2 /* Debug */,
+				350055552F22212A007F05F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 350055202F222129007F05F2 /* Project object */;
+}
