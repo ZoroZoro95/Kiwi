@@ -30,6 +30,9 @@ final class CanvasView: NSView {
     // MARK: - Responder
     override var acceptsFirstResponder: Bool { true }
     
+    // MARK: - Cursor Blink
+    private var cursorVisible = true
+    private var blinkTimer: Timer?
     
     // MARK: - Grid Setup
     private func setupGrid() {
@@ -65,8 +68,8 @@ final class CanvasView: NSView {
         wantsRestingTouches = false
         NSCursor.hide()
         CGAssociateMouseAndMouseCursorPosition(0)
-        
         setupGrid()
+        startBlinkTimer()
     }
 //    override func layout() {
 //        super.layout()
@@ -77,7 +80,30 @@ final class CanvasView: NSView {
         NSCursor.unhide()
         CGAssociateMouseAndMouseCursorPosition(1)
     }
+    // MARK: - Cursor Movement
+    private func moveCursor(deltaCol: Int, deltaRow: Int) {
+        var newCol = cursor.boxIndex + deltaCol
+        var newRow = cursor.lineIndex + deltaRow
 
+        // wrap left
+        if newCol < 0 {
+            newCol = numCols - 1
+            newRow -= 1
+        }
+
+        // wrap right
+        if newCol >= numCols {
+            newCol = 0
+            newRow += 1
+        }
+
+        // clamp rows
+        newRow = max(0, min(newRow, numRows - 1))
+
+        cursor.boxIndex = newCol
+        cursor.lineIndex = newRow
+        needsDisplay = true
+    }
     // MARK: - Keyboard
     override func keyDown(with event: NSEvent) {
         let key = event.charactersIgnoringModifiers?.lowercased()
@@ -103,7 +129,23 @@ final class CanvasView: NSView {
             clearAll()
             return
         }
-
+        // Arrow keys
+        if key == String(UnicodeScalar(NSEvent.SpecialKey.leftArrow.rawValue)!) {
+            moveCursor(deltaCol: -1, deltaRow: 0)
+            return
+        }
+        if key == String(UnicodeScalar(NSEvent.SpecialKey.rightArrow.rawValue)!) {
+            moveCursor(deltaCol: 1, deltaRow: 0)
+            return
+        }
+        if key == String(UnicodeScalar(NSEvent.SpecialKey.upArrow.rawValue)!) {
+            moveCursor(deltaCol: 0, deltaRow: -1)
+            return
+        }
+        if key == String(UnicodeScalar(NSEvent.SpecialKey.downArrow.rawValue)!) {
+            moveCursor(deltaCol: 0, deltaRow: 1)
+            return
+        }
         super.keyDown(with: event)
     }
 
@@ -338,6 +380,19 @@ final class CanvasView: NSView {
         NSColor.blue.withAlphaComponent(0.1).setFill()
         currentBox.fill()
 
+        // blinking cursor line
+        if cursorVisible {
+            NSColor.blue.withAlphaComponent(0.8).setStroke()
+            let cursorPath = NSBezierPath()
+            cursorPath.lineWidth = 2
+            let cursorX = currentBox.minX + 3
+            let cursorTop = currentBox.maxY - 6
+            let cursorBottom = currentBox.minY + 6
+            cursorPath.move(to: NSPoint(x: cursorX, y: cursorBottom))
+            cursorPath.line(to: NSPoint(x: cursorX, y: cursorTop))
+            cursorPath.stroke()
+        }
+
         // symbols
         NSColor.black.setStroke()
         NSColor.black.setFill()
@@ -415,6 +470,13 @@ final class CanvasView: NSView {
                 height: dotRadius * 2
             )
             NSBezierPath(ovalIn: rect).fill()
+        }
+    }
+    
+    private func startBlinkTimer() {
+        blinkTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+            self?.cursorVisible.toggle()
+            self?.needsDisplay = true
         }
     }
 }
