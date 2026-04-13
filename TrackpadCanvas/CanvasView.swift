@@ -34,6 +34,12 @@ final class CanvasView: NSView {
     private var cursorVisible = true
     private var blinkTimer: Timer?
     
+    // MARK: - Double Tap
+    private var lastTapTime: Date = .distantPast
+    private let doubleTapThreshold: TimeInterval = 0.3
+    
+    // MARK: - Text Space
+    private var textCursorIndex: Int = 0
     // MARK: - Grid Setup
     private func setupGrid() {
         lines.removeAll()
@@ -110,26 +116,81 @@ final class CanvasView: NSView {
         let cmd = event.modifierFlags.contains(.command)
         let ctrl = event.modifierFlags.contains(.control)
 
+        // Ctrl+K — toggle drawing
         if ctrl && key == "k" {
             writingEnabled.toggle()
             return
         }
-        
+
+        // Ctrl+G — toggle grid visibility
         if ctrl && key == "g" {
             showGrid.toggle()
             needsDisplay = true
             return
         }
+
+        // Ctrl+T — create text space
+        if ctrl && key == "t" {
+            createTextSpace()
+            return
+        }
+
+        // Cmd+Z — undo
         if cmd && key == "z" {
             undoLastSymbol()
             return
         }
 
+        // Cmd+C — clear
         if cmd && key == "c" {
             clearAll()
             return
         }
-        // Arrow keys
+
+        // text space mode
+        if cursor.isInTextSpace {
+            // G — exit text space
+            if event.keyCode == 53 { // Escape
+                exitTextSpace()
+                return
+            }
+
+            // backspace
+            if event.keyCode == 51 {
+                handleBackspace()
+                return
+            }
+
+            // arrow keys inside text space
+            if key == String(UnicodeScalar(NSEvent.SpecialKey.leftArrow.rawValue)!) {
+                textCursorIndex = max(0, textCursorIndex - 1)
+                needsDisplay = true
+                return
+            }
+            if key == String(UnicodeScalar(NSEvent.SpecialKey.rightArrow.rawValue)!) {
+                if let ts = currentTextSpace() {
+                    textCursorIndex = min(ts.content.count, textCursorIndex + 1)
+                }
+                needsDisplay = true
+                return
+            }
+
+            // spacebar inside text space
+            if event.keyCode == 49 {
+                handleTextInput(" ")
+                return
+            }
+
+            // regular typing
+            if let k = event.characters, !k.isEmpty, !ctrl, !cmd {
+                handleTextInput(k)
+                return
+            }
+
+            return
+        }
+
+        // grid mode arrow keys
         if key == String(UnicodeScalar(NSEvent.SpecialKey.leftArrow.rawValue)!) {
             moveCursor(deltaCol: -1, deltaRow: 0)
             return
@@ -146,9 +207,15 @@ final class CanvasView: NSView {
             moveCursor(deltaCol: 0, deltaRow: 1)
             return
         }
+
+        // spacebar in grid — force commit
+        if event.keyCode == 49 {
+            commitBufferedStrokes()
+            return
+        }
+
         super.keyDown(with: event)
     }
-
     // MARK: - Touches
     override func touchesBegan(with event: NSEvent) {
         guard writingEnabled else { return }
@@ -183,7 +250,6 @@ final class CanvasView: NSView {
         guard writingEnabled else { return }
 
         if currentStroke.count <= 1 {
-            // it's a dot — buffer it, don't commit yet
             if let point = currentStroke.first {
                 dotBuffer.append(point)
             }
@@ -197,7 +263,6 @@ final class CanvasView: NSView {
         currentStroke.removeAll()
         restartCommitTimer()
     }
-
     // MARK: - Timer
     private func restartCommitTimer() {
         bufferTimer?.invalidate()
@@ -221,7 +286,8 @@ final class CanvasView: NSView {
             return
         }
 
-        let symbol = buildSymbol(strokes: strokeBuffer, dots: dotBuffer)
+        let normalizedStrokes = StrokeNormalizer.normalize(strokeBuffer)
+        let symbol = buildSymbol(strokes: normalizedStrokes, dots: dotBuffer)
         let transformed = transformSymbolToBox(symbol, line: cursor.lineIndex, col: cursor.boxIndex)
 
         // store in grid
@@ -234,16 +300,20 @@ final class CanvasView: NSView {
         }
 
         symbols.append(transformed)
-        cursor.boxIndex = min(cursor.boxIndex + 1, numCols - 1)
+//        cursor.boxIndex = min(cursor.boxIndex + 1, numCols - 1)
+        moveCursor(deltaCol: 1, deltaRow: 0)
         strokeBuffer.removeAll()
         dotBuffer.removeAll()
         needsDisplay = true
     }
 
+//    private func shouldMergeWithPrevious() -> Bool {
+//        guard let last = symbols.last else { return false }
+//        let elapsed = Date().timeIntervalSince(last.timestamp)
+//        return elapsed < mergeWindow
+//    }
     private func shouldMergeWithPrevious() -> Bool {
-        guard let last = symbols.last else { return false }
-        let elapsed = Date().timeIntervalSince(last.timestamp)
-        return elapsed < mergeWindow
+        return false
     }
 
     private func mergeIntoPreviousSymbol() {
@@ -399,7 +469,46 @@ final class CanvasView: NSView {
         for symbol in symbols {
             drawSymbol(symbol)
         }
-
+        // text spaces
+        for line in lines {
+            for segment in line.segments {
+                if case .textSpace(let ts) = segment {
+                    // cream background
+                    NSColor(red: 1.0, green: 0.98, blue: 0.9, alpha: 1.0).setFill()
+                    ts.bounds.fill()
+                    
+                    // border
+                    NSColor.orange.withAlphaComponent(0.3).setStroke()
+                    let border = NSBezierPath(rect: ts.bounds)
+                    border.lineWidth = 1
+                    border.stroke()
+                    
+                    // text
+                    let attrs: [NSAttributedString.Key: Any] = [
+                        .font: NSFont.systemFont(ofSize: 14),
+                        .foregroundColor: NSColor.black
+                    ]
+                    let textPoint = NSPoint(x: ts.bounds.minX + 4, y: ts.bounds.minY + (ts.bounds.height - 14) / 2)
+                    (ts.content as NSString).draw(at: textPoint, withAttributes: attrs)
+                    
+                    // text cursor inside text space
+                    if cursor.isInTextSpace && cursor.boxIndex >= ts.startCol && cursor.boxIndex <= ts.endCol {
+                        let typedSoFar = String(ts.content.prefix(textCursorIndex))
+                        let typedWidth = (typedSoFar as NSString).size(withAttributes: attrs).width
+                        let cursorX = ts.bounds.minX + 4 + typedWidth
+                        
+                        if cursorVisible {
+                            NSColor.orange.setStroke()
+                            let cursorPath = NSBezierPath()
+                            cursorPath.lineWidth = 2
+                            cursorPath.move(to: NSPoint(x: cursorX, y: ts.bounds.minY + 4))
+                            cursorPath.line(to: NSPoint(x: cursorX, y: ts.bounds.maxY - 4))
+                            cursorPath.stroke()
+                        }
+                    }
+                }
+            }
+        }
         // live preview
         let previewPath = NSBezierPath()
         previewPath.lineWidth = 2
@@ -478,5 +587,174 @@ final class CanvasView: NSView {
             self?.cursorVisible.toggle()
             self?.needsDisplay = true
         }
+    }
+    
+    private func isDoubleTap() -> Bool {
+        let now = Date()
+        let elapsed = now.timeIntervalSince(lastTapTime)
+        lastTapTime = now
+        return elapsed < doubleTapThreshold
+    }
+    
+    // MARK: - Text Space
+    private func createTextSpace() {
+        let boxWidth = bounds.width / CGFloat(numCols)
+        let boxHeight = bounds.height / CGFloat(numRows)
+        
+        let startCol = cursor.boxIndex
+        let endCol = min(cursor.boxIndex + 2, numCols - 1)
+        
+        let textSpace = TextSpace(
+            startCol: startCol,
+            endCol: endCol,
+            row: cursor.lineIndex,
+            boxWidth: boxWidth,
+            boxHeight: boxHeight,
+            canvasHeight: bounds.height
+        )
+        
+        // replace grid boxes with text space in current line
+        for col in startCol...endCol {
+            lines[cursor.lineIndex].segments[col] = .textSpace(textSpace)
+        }
+        
+        cursor.isInTextSpace = true
+        textCursorIndex = 0
+        needsDisplay = true
+    }
+    private func exitTextSpace() {
+        cursor.isInTextSpace = false
+        // move cursor to next grid box after text space
+        if let ts = currentTextSpace() {
+            cursor.boxIndex = min(ts.endCol + 1, numCols - 1)
+        }
+        needsDisplay = true
+    }
+
+    private func currentTextSpace() -> TextSpace? {
+        for segment in lines[cursor.lineIndex].segments {
+            if case .textSpace(let ts) = segment {
+                if cursor.boxIndex >= ts.startCol && cursor.boxIndex <= ts.endCol {
+                    return ts
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func handleTextInput(_ key: String) {
+        guard cursor.isInTextSpace else { return }
+        guard var ts = currentTextSpace() else { return }
+        
+        // safe index calculation
+        let safeIndex = min(textCursorIndex, ts.content.count)
+        let insertIndex = ts.content.index(ts.content.startIndex, offsetBy: safeIndex)
+        ts.content.insert(contentsOf: key, at: insertIndex)
+        textCursorIndex = safeIndex + key.count
+        
+        // update all segments for this text space
+        for col in ts.startCol...ts.endCol {
+            lines[cursor.lineIndex].segments[col] = .textSpace(ts)
+        }
+        
+        // check if we need to extend or wrap
+        let attrs: [NSAttributedString.Key: Any] = [.font: NSFont.systemFont(ofSize: 14)]
+        let textWidth = (ts.content as NSString).size(withAttributes: attrs).width
+        let boxWidth = bounds.width / CGFloat(numCols)
+        let currentWidth = CGFloat(ts.endCol - ts.startCol + 1) * boxWidth
+        
+        if textWidth > currentWidth - 10 {
+            if ts.endCol < numCols - 1 {
+                // extend right
+                ts.endCol += 1
+                let boxHeight = bounds.height / CGFloat(numRows)
+                ts.bounds = NSRect(
+                    x: CGFloat(ts.startCol) * boxWidth,
+                    y: ts.bounds.minY,
+                    width: CGFloat(ts.endCol - ts.startCol + 1) * boxWidth,
+                    height: boxHeight
+                )
+                for col in ts.startCol...ts.endCol {
+                    lines[cursor.lineIndex].segments[col] = .textSpace(ts)
+                }
+            } else {
+                // wrap to next line
+                wrapTextSpaceToNextLine(ts)
+            }
+        }
+        
+        needsDisplay = true
+    }
+
+    private func wrapTextSpaceToNextLine(_ currentTs: TextSpace) {
+        let nextRow = cursor.lineIndex + 1
+        guard nextRow < numRows else { return }
+        
+        let boxWidth = bounds.width / CGFloat(numCols)
+        let boxHeight = bounds.height / CGFloat(numRows)
+        
+        // create new text space on next line starting at col 0
+        var newTs = TextSpace(
+            startCol: 0,
+            endCol: 2,
+            row: nextRow,
+            boxWidth: boxWidth,
+            boxHeight: boxHeight,
+            canvasHeight: bounds.height
+        )
+        newTs.content = ""
+        
+        for col in 0...2 {
+            lines[nextRow].segments[col] = .textSpace(newTs)
+        }
+        
+        // move cursor to next line
+        cursor.lineIndex = nextRow
+        cursor.boxIndex = 0
+        textCursorIndex = 0
+    }
+
+    private func autoExtendTextSpaceIfNeeded(_ textSpace: TextSpace) {
+        var ts = textSpace
+        let boxWidth = bounds.width / CGFloat(numCols)
+        let boxHeight = bounds.height / CGFloat(numRows)
+        
+        // estimate text width
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 14)
+        ]
+        let textWidth = (ts.content as NSString).size(withAttributes: attrs).width
+        let currentWidth = CGFloat(ts.endCol - ts.startCol + 1) * boxWidth
+        
+        if textWidth > currentWidth - 10 && ts.endCol < numCols - 1 {
+            ts.endCol += 1
+            ts.bounds = NSRect(
+                x: CGFloat(ts.startCol) * boxWidth,
+                y: ts.bounds.minY,
+                width: CGFloat(ts.endCol - ts.startCol + 1) * boxWidth,
+                height: boxHeight
+            )
+            // add new segment for expanded col
+            lines[cursor.lineIndex].segments[ts.endCol] = .textSpace(ts)
+            // update all existing segments
+            for col in ts.startCol...ts.endCol {
+                lines[cursor.lineIndex].segments[col] = .textSpace(ts)
+            }
+        }
+    }
+    private func handleBackspace() {
+        guard cursor.isInTextSpace else { return }
+        guard var ts = currentTextSpace() else { return }
+        guard textCursorIndex > 0 && !ts.content.isEmpty else { return }
+        
+        let safeIndex = min(textCursorIndex, ts.content.count)
+        let removeIndex = ts.content.index(ts.content.startIndex, offsetBy: safeIndex - 1)
+        ts.content.remove(at: removeIndex)
+        textCursorIndex = safeIndex - 1
+        
+        for col in ts.startCol...ts.endCol {
+            lines[cursor.lineIndex].segments[col] = .textSpace(ts)
+        }
+        needsDisplay = true
     }
 }
