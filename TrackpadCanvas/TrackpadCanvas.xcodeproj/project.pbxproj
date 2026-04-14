@@ -15,6 +15,7 @@
 		350055482F22212A007F05F2 /* TrackpadCanvasUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350055472F22212A007F05F2 /* TrackpadCanvasUITests.swift */; };
 		3500554A2F22212A007F05F2 /* TrackpadCanvasUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350055492F22212A007F05F2 /* TrackpadCanvasUITestsLaunchTests.swift */; };
 		350055572F222590007F05F2 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350055562F222590007F05F2 /* CanvasView.swift */; };
+		355022E82F8DF06E00068461 /* GroupingDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355022E72F8DF06E00068461 /* GroupingDetector.swift */; };
 		3581CD0E2F6A785900476BC9 /* GridModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3581CD0D2F6A785900476BC9 /* GridModels.swift */; };
 		3581CD122F6D345300476BC9 /* SymbolClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3581CD112F6D345200476BC9 /* SymbolClassifier.swift */; };
 		3581CD142F6D3C4300476BC9 /* StrokeNormalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3581CD132F6D3C4300476BC9 /* StrokeNormalizer.swift */; };
@@ -51,6 +52,7 @@
 		350055472F22212A007F05F2 /* TrackpadCanvasUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadCanvasUITests.swift; sourceTree = "<group>"; };
 		350055492F22212A007F05F2 /* TrackpadCanvasUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadCanvasUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		350055562F222590007F05F2 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		355022E72F8DF06E00068461 /* GroupingDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupingDetector.swift; sourceTree = "<group>"; };
 		3581CD0D2F6A785900476BC9 /* GridModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridModels.swift; sourceTree = "<group>"; };
 		3581CD112F6D345200476BC9 /* SymbolClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolClassifier.swift; sourceTree = "<group>"; };
 		3581CD132F6D3C4300476BC9 /* StrokeNormalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeNormalizer.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		3500551F2F222129007F05F2 = {
 			isa = PBXGroup;
 			children = (
+				355022E72F8DF06E00068461 /* GroupingDetector.swift */,
 				3581CD132F6D3C4300476BC9 /* StrokeNormalizer.swift */,
 				3581CD112F6D345200476BC9 /* SymbolClassifier.swift */,
 				3581CD0D2F6A785900476BC9 /* GridModels.swift */,
@@ -272,6 +275,7 @@
 				3581CD122F6D345300476BC9 /* SymbolClassifier.swift in Sources */,
 				3500552C2F222129007F05F2 /* AppDelegate.swift in Sources */,
 				350055572F222590007F05F2 /* CanvasView.swift in Sources */,
+				355022E82F8DF06E00068461 /* GroupingDetector.swift in Sources */,
 				3581CD0E2F6A785900476BC9 /* GridModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

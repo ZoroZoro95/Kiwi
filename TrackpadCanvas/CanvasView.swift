@@ -91,6 +91,17 @@ final class CanvasView: NSView {
         var newCol = cursor.boxIndex + deltaCol
         var newRow = cursor.lineIndex + deltaRow
 
+        // if exiting a text space, jump past it entirely
+        if cursor.isInTextSpace, let ts = currentTextSpace() {
+            if deltaCol > 0 {
+                newCol = ts.endCol + 1
+                newRow = cursor.lineIndex
+            } else if deltaCol < 0 {
+                newCol = ts.startCol - 1
+                newRow = cursor.lineIndex
+            }
+        }
+
         // wrap left
         if newCol < 0 {
             newCol = numCols - 1
@@ -108,6 +119,17 @@ final class CanvasView: NSView {
 
         cursor.boxIndex = newCol
         cursor.lineIndex = newRow
+
+        // auto detect if cursor is now in a text space
+        let segment = lines[newRow].segments[newCol]
+        switch segment {
+        case .textSpace(let ts):
+            cursor.isInTextSpace = true
+            textCursorIndex = deltaCol > 0 ? 0 : ts.content.count
+        case .gridBox:
+            cursor.isInTextSpace = false
+        }
+
         needsDisplay = true
     }
     // MARK: - Keyboard
@@ -149,33 +171,41 @@ final class CanvasView: NSView {
 
         // text space mode
         if cursor.isInTextSpace {
-            // G — exit text space
-            if event.keyCode == 53 { // Escape
-                exitTextSpace()
-                return
-            }
-
-            // backspace
+            // backspace in text space
             if event.keyCode == 51 {
                 handleBackspace()
                 return
             }
 
-            // arrow keys inside text space
+            // arrow keys — navigate chars, exit at boundary
             if key == String(UnicodeScalar(NSEvent.SpecialKey.leftArrow.rawValue)!) {
-                textCursorIndex = max(0, textCursorIndex - 1)
-                needsDisplay = true
+                if let ts = currentTextSpace(), textCursorIndex > 0 {
+                    textCursorIndex -= 1
+                    needsDisplay = true
+                } else {
+                    moveCursor(deltaCol: -1, deltaRow: 0)
+                }
                 return
             }
             if key == String(UnicodeScalar(NSEvent.SpecialKey.rightArrow.rawValue)!) {
-                if let ts = currentTextSpace() {
-                    textCursorIndex = min(ts.content.count, textCursorIndex + 1)
+                if let ts = currentTextSpace(), textCursorIndex < ts.content.count {
+                    textCursorIndex += 1
+                    needsDisplay = true
+                } else {
+                    moveCursor(deltaCol: 1, deltaRow: 0)
                 }
-                needsDisplay = true
+                return
+            }
+            if key == String(UnicodeScalar(NSEvent.SpecialKey.upArrow.rawValue)!) {
+                moveCursor(deltaCol: 0, deltaRow: -1)
+                return
+            }
+            if key == String(UnicodeScalar(NSEvent.SpecialKey.downArrow.rawValue)!) {
+                moveCursor(deltaCol: 0, deltaRow: 1)
                 return
             }
 
-            // spacebar inside text space
+            // spacebar
             if event.keyCode == 49 {
                 handleTextInput(" ")
                 return
@@ -213,7 +243,12 @@ final class CanvasView: NSView {
             commitBufferedStrokes()
             return
         }
-
+        // grid mode
+        // backspace in grid
+        if event.keyCode == 51 {
+            undoLastSymbol()
+            return
+        }
         super.keyDown(with: event)
     }
     // MARK: - Touches
@@ -274,37 +309,82 @@ final class CanvasView: NSView {
         }
     }
 
-    // MARK: - Commit
     private func commitBufferedStrokes() {
         bufferTimer?.invalidate()
         bufferTimer = nil
 
         guard !strokeBuffer.isEmpty || !dotBuffer.isEmpty else { return }
 
-        if shouldMergeWithPrevious() {
-            mergeIntoPreviousSymbol()
-            return
-        }
-
         let normalizedStrokes = StrokeNormalizer.normalize(strokeBuffer)
         let symbol = buildSymbol(strokes: normalizedStrokes, dots: dotBuffer)
-        let transformed = transformSymbolToBox(symbol, line: cursor.lineIndex, col: cursor.boxIndex)
-
-        // store in grid
-        switch lines[cursor.lineIndex].segments[cursor.boxIndex] {
-        case .gridBox(var box):
-            box.symbol = transformed
-            lines[cursor.lineIndex].segments[cursor.boxIndex] = .gridBox(box)
-        default:
-            break
+        
+        // check grouping with previous symbol
+        let prevSymbol = symbols.last
+        let grouping = GroupingDetector.detect(current: symbol, previous: prevSymbol)
+        
+        switch grouping {
+        case .newSymbol:
+            placeSymbol(symbol)
+            
+        case .mergeAsDot:
+            guard var last = symbols.last else { placeSymbol(symbol); return }
+            last.dots += symbol.dots
+            last.boundingBox = Symbol.computeBoundingBox(strokes: last.strokes, dots: last.dots)
+            symbols.removeLast()
+            let prevCol = max(cursor.boxIndex - 1, 0)
+            let transformed = transformSymbolToBox(last, line: cursor.lineIndex, col: prevCol)
+            symbols.append(transformed)
+            updateGrid(symbol: transformed, line: cursor.lineIndex, col: prevCol)
+            
+        case .mergeAsExponent:
+            guard var last = symbols.last else { placeSymbol(symbol); return }
+            last.exponents.append(symbol)
+            symbols.removeLast()
+            let prevCol = max(cursor.boxIndex - 1, 0)
+            let transformed = transformSymbolToBox(last, line: cursor.lineIndex, col: prevCol)
+            symbols.append(transformed)
+            updateGrid(symbol: transformed, line: cursor.lineIndex, col: prevCol)
+            
+        case .mergeAsSubscript:
+            guard var last = symbols.last else { placeSymbol(symbol); return }
+            last.subscripts.append(symbol)
+            symbols.removeLast()
+            let prevCol = max(cursor.boxIndex - 1, 0)
+            let transformed = transformSymbolToBox(last, line: cursor.lineIndex, col: prevCol)
+            symbols.append(transformed)
+            updateGrid(symbol: transformed, line: cursor.lineIndex, col: prevCol)
+            
+        case .mergeAsCoefficient:
+            guard var last = symbols.last else { placeSymbol(symbol); return }
+            last.strokes += symbol.strokes
+            last.boundingBox = Symbol.computeBoundingBox(strokes: last.strokes, dots: last.dots)
+            symbols.removeLast()
+            let prevCol = max(cursor.boxIndex - 1, 0)
+            let transformed = transformSymbolToBox(last, line: cursor.lineIndex, col: prevCol)
+            symbols.append(transformed)
+            updateGrid(symbol: transformed, line: cursor.lineIndex, col: prevCol)
         }
-
-        symbols.append(transformed)
-//        cursor.boxIndex = min(cursor.boxIndex + 1, numCols - 1)
-        moveCursor(deltaCol: 1, deltaRow: 0)
+        
         strokeBuffer.removeAll()
         dotBuffer.removeAll()
         needsDisplay = true
+    }
+
+    private func placeSymbol(_ symbol: Symbol) {
+        let transformed = transformSymbolToBox(symbol, line: cursor.lineIndex, col: cursor.boxIndex)
+        symbols.append(transformed)
+        updateGrid(symbol: transformed, line: cursor.lineIndex, col: cursor.boxIndex)
+        moveCursor(deltaCol: 1, deltaRow: 0)
+    }
+
+    private func updateGrid(symbol: Symbol, line: Int, col: Int) {
+        switch lines[line].segments[col] {
+        case .gridBox(var box):
+            box.symbol = symbol
+            lines[line].segments[col] = .gridBox(box)
+        default:
+            break
+        }
     }
 
 //    private func shouldMergeWithPrevious() -> Bool {
@@ -312,39 +392,7 @@ final class CanvasView: NSView {
 //        let elapsed = Date().timeIntervalSince(last.timestamp)
 //        return elapsed < mergeWindow
 //    }
-    private func shouldMergeWithPrevious() -> Bool {
-        return false
-    }
-
-    private func mergeIntoPreviousSymbol() {
-        guard var last = symbols.last else { return }
-
-        last.strokes += strokeBuffer
-        last.dots += dotBuffer
-        last.boundingBox = Symbol.computeBoundingBox(
-            strokes: last.strokes,
-            dots: last.dots
-        )
-
-        symbols.removeLast()
-
-        let prevCol = max(cursor.boxIndex - 1, 0)
-        let transformed = transformSymbolToBox(last, line: cursor.lineIndex, col: prevCol)
-        symbols.append(transformed)
-
-        // update grid
-        switch lines[cursor.lineIndex].segments[prevCol] {
-        case .gridBox(var box):
-            box.symbol = transformed
-            lines[cursor.lineIndex].segments[prevCol] = .gridBox(box)
-        default:
-            break
-        }
-
-        strokeBuffer.removeAll()
-        dotBuffer.removeAll()
-        needsDisplay = true
-    }
+    
 
     // MARK: - Helpers
     private func buildSymbol(strokes: [[NSPoint]], dots: [NSPoint]) -> Symbol {
@@ -385,20 +433,21 @@ final class CanvasView: NSView {
 
     // MARK: - Undo & Clear
     private func undoLastSymbol() {
-        guard !symbols.isEmpty else { return }
-        symbols.removeLast()
-
-        // clear from grid
-        let prevCol = max(cursor.boxIndex - 1, 0)
-        switch lines[cursor.lineIndex].segments[prevCol] {
+        let targetCol = max(cursor.boxIndex - 1, 0)
+        let targetRow = cursor.lineIndex
+        
+        switch lines[targetRow].segments[targetCol] {
         case .gridBox(var box):
             box.symbol = nil
-            lines[cursor.lineIndex].segments[prevCol] = .gridBox(box)
+            lines[targetRow].segments[targetCol] = .gridBox(box)
+            cursor.boxIndex = targetCol
+            // also remove from symbols array — remove last matching
+            if !symbols.isEmpty {
+                symbols.removeLast()
+            }
         default:
             break
         }
-
-        cursor.boxIndex = prevCol
         needsDisplay = true
     }
 
@@ -598,11 +647,22 @@ final class CanvasView: NSView {
     
     // MARK: - Text Space
     private func createTextSpace() {
+        // check if cursor is already on a text space — re-enter it
+        let segment = lines[cursor.lineIndex].segments[cursor.boxIndex]
+        if case .textSpace(let ts) = segment {
+            cursor.isInTextSpace = true
+            cursor.boxIndex = ts.startCol
+            textCursorIndex = ts.content.count
+            needsDisplay = true
+            return
+        }
+        
         let boxWidth = bounds.width / CGFloat(numCols)
         let boxHeight = bounds.height / CGFloat(numRows)
         
-        let startCol = cursor.boxIndex
-        let endCol = min(cursor.boxIndex + 2, numCols - 1)
+        // create 1 box ahead of current cursor
+        let startCol = min(cursor.boxIndex + 1, numCols - 1)
+        let endCol = min(startCol + 2, numCols - 1)
         
         let textSpace = TextSpace(
             startCol: startCol,
@@ -613,12 +673,12 @@ final class CanvasView: NSView {
             canvasHeight: bounds.height
         )
         
-        // replace grid boxes with text space in current line
         for col in startCol...endCol {
             lines[cursor.lineIndex].segments[col] = .textSpace(textSpace)
         }
         
         cursor.isInTextSpace = true
+        cursor.boxIndex = startCol
         textCursorIndex = 0
         needsDisplay = true
     }
