@@ -41,6 +41,13 @@ final class CanvasView: NSView {
     // MARK: - Text Space
     private var textCursorIndex: Int = 0
     // MARK: - Grid Setup
+    
+    
+    
+    // MARK: - Palm Rejection
+    private var activeTouches: Set<Int> = []
+    private let maxWritingTouches = 1
+    
     private func setupGrid() {
         lines.removeAll()
         
@@ -254,9 +261,22 @@ final class CanvasView: NSView {
     // MARK: - Touches
     override func touchesBegan(with event: NSEvent) {
         guard writingEnabled else { return }
+        
+        let touches = event.touches(matching: .touching, in: self)
+        
+        // palm rejection — if more than 2 touches, ignore everything
+        if touches.count > 2 {
+            currentStroke.removeAll()
+            strokeBuffer.removeAll()
+            bufferTimer?.invalidate()
+            return
+        }
+        
+        
+        
+        // single finger — normal writing
         currentStroke.removeAll()
-
-        if let touch = event.touches(matching: .touching, in: self).first {
+        if let touch = touches.first {
             let n = touch.normalizedPosition
             currentStroke.append(NSPoint(
                 x: n.x * bounds.width,
@@ -267,23 +287,36 @@ final class CanvasView: NSView {
 
     override func touchesMoved(with event: NSEvent) {
         guard writingEnabled else { return }
-        guard let touch = event.touches(matching: .touching, in: self).first else { return }
-
+        
+        let touches = event.touches(matching: .touching, in: self)
+        
+        // palm rejection
+        if touches.count > 2 {
+            currentStroke.removeAll()
+            return
+        }
+        
+        guard let touch = touches.first else { return }
+        
         let n = touch.normalizedPosition
         let point = NSPoint(x: n.x * bounds.width, y: n.y * bounds.height)
-
+        
         if let last = currentStroke.last {
             if abs(point.x - last.x) < 0.6 &&
                abs(point.y - last.y) < 0.6 { return }
         }
-
+        
         currentStroke.append(point)
         needsDisplay = true
     }
 
     override func touchesEnded(with event: NSEvent) {
         guard writingEnabled else { return }
-
+        
+        let touches = event.touches(matching: .touching, in: self)
+        
+        guard touches.count == 0 else { return }
+        
         if currentStroke.count <= 1 {
             if let point = currentStroke.first {
                 dotBuffer.append(point)
@@ -293,7 +326,7 @@ final class CanvasView: NSView {
             restartCommitTimer()
             return
         }
-
+        
         strokeBuffer.append(currentStroke)
         currentStroke.removeAll()
         restartCommitTimer()
@@ -593,6 +626,7 @@ final class CanvasView: NSView {
                 withAttributes: attrs
             )
         }
+
     }
 
     // MARK: - Grid Helpers
@@ -620,6 +654,7 @@ final class CanvasView: NSView {
         }
         path.stroke()
 
+        // dots
         for dot in symbol.dots {
             let rect = NSRect(
                 x: dot.x - dotRadius,
@@ -628,6 +663,34 @@ final class CanvasView: NSView {
                 height: dotRadius * 2
             )
             NSBezierPath(ovalIn: rect).fill()
+        }
+
+        // exponents — render smaller, upper right
+        for exp in symbol.exponents {
+            let expPath = NSBezierPath()
+            expPath.lineWidth = 1.5
+            expPath.lineCapStyle = .round
+            expPath.lineJoinStyle = .round
+            for stroke in exp.strokes {
+                guard let first = stroke.first else { continue }
+                expPath.move(to: first)
+                for p in stroke.dropFirst() { expPath.line(to: p) }
+            }
+            expPath.stroke()
+        }
+
+        // subscripts — render smaller, lower right
+        for sub in symbol.subscripts {
+            let subPath = NSBezierPath()
+            subPath.lineWidth = 1.5
+            subPath.lineCapStyle = .round
+            subPath.lineJoinStyle = .round
+            for stroke in sub.strokes {
+                guard let first = stroke.first else { continue }
+                subPath.move(to: first)
+                for p in stroke.dropFirst() { subPath.line(to: p) }
+            }
+            subPath.stroke()
         }
     }
     
