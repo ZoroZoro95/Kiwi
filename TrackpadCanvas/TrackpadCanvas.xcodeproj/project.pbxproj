@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+        A10000000000000000000003 = {isa = PBXBuildFile; fileRef = A10000000000000000000004; };
+        A10000000000000000000001 = {isa = PBXBuildFile; fileRef = A10000000000000000000002; };
+		35A000012F90000100A00001 /* InkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A000002F90000100A00001 /* InkModels.swift */; };
+		35A000032F90000100A00001 /* ComposerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A000022F90000100A00001 /* ComposerFeature.swift */; };
+		35A000052F90000100A00001 /* ComposerCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A000042F90000100A00001 /* ComposerCanvasView.swift */; };
+		35A000072F90000100A00001 /* AppShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A000062F90000100A00001 /* AppShell.swift */; };
 		3500552C2F222129007F05F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3500552B2F222129007F05F2 /* AppDelegate.swift */; };
 		3500552E2F222129007F05F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3500552D2F222129007F05F2 /* ViewController.swift */; };
 		350055302F22212A007F05F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3500552F2F22212A007F05F2 /* Assets.xcassets */; };
@@ -40,6 +46,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+        A10000000000000000000004 = {isa = PBXFileReference; lastKnownFileType = text; path = "MathJax-LICENSE.txt"; sourceTree = SOURCE_ROOT; };
+        A10000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "MathJax-tex-svg.js"; sourceTree = SOURCE_ROOT; };
+		35A000002F90000100A00001 /* InkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkModels.swift; sourceTree = "<group>"; };
+		35A000022F90000100A00001 /* ComposerFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerFeature.swift; sourceTree = "<group>"; };
+		35A000042F90000100A00001 /* ComposerCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerCanvasView.swift; sourceTree = "<group>"; };
+		35A000062F90000100A00001 /* AppShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShell.swift; sourceTree = "<group>"; };
 		350055282F222129007F05F2 /* TrackpadCanvas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackpadCanvas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3500552B2F222129007F05F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3500552D2F222129007F05F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +99,10 @@
 		3500551F2F222129007F05F2 = {
 			isa = PBXGroup;
 			children = (
+				35A000062F90000100A00001 /* AppShell.swift */,
+				35A000042F90000100A00001 /* ComposerCanvasView.swift */,
+				35A000022F90000100A00001 /* ComposerFeature.swift */,
+				35A000002F90000100A00001 /* InkModels.swift */,
 				355022E72F8DF06E00068461 /* GroupingDetector.swift */,
 				3581CD132F6D3C4300476BC9 /* StrokeNormalizer.swift */,
 				3581CD112F6D345200476BC9 /* SymbolClassifier.swift */,
@@ -244,6 +260,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				350055302F22212A007F05F2 /* Assets.xcassets in Resources */,
+                A10000000000000000000001,
+                A10000000000000000000003,
 				350055332F22212A007F05F2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +287,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35A000072F90000100A00001 /* AppShell.swift in Sources */,
+				35A000052F90000100A00001 /* ComposerCanvasView.swift in Sources */,
+				35A000032F90000100A00001 /* ComposerFeature.swift in Sources */,
+				35A000012F90000100A00001 /* InkModels.swift in Sources */,
 				3581CD142F6D3C4300476BC9 /* StrokeNormalizer.swift in Sources */,
 				3500552E2F222129007F05F2 /* ViewController.swift in Sources */,
 				359148802F41B3DC002B4358 /* Symbol.swift in Sources */,
@@ -454,8 +476,8 @@
 				DEVELOPMENT_TEAM = 7W69DB4K56;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -481,8 +503,8 @@
 				DEVELOPMENT_TEAM = 7W69DB4K56;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
