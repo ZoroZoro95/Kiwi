@@ -18,7 +18,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let delegate = AppDelegate()
         application.delegate = delegate
         application.setActivationPolicy(.accessory)
-        application.run()
+        // NSApplication holds its delegate weakly. Keep it alive in optimized builds.
+        withExtendedLifetime(delegate) {
+            application.run()
+        }
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {

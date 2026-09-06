@@ -408,14 +408,15 @@ final class ComposerPanelController: NSWindowController, NSWindowDelegate {
 
         let panel = NSPanel(
             contentRect: NSRect(x: 0, y: 0, width: 760, height: 610),
-            styleMask: [.titled, .closable, .resizable],
+            styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false
         )
         panel.title = "Free Touch"
         panel.level = .floating
+        panel.hidesOnDeactivate = false
         panel.isReleasedWhenClosed = false
-        panel.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.contentMinSize = NSSize(width: 720, height: 610)
         panel.contentViewController = composerViewController
 
@@ -434,13 +435,14 @@ final class ComposerPanelController: NSWindowController, NSWindowDelegate {
         guard let window else { return }
         if !window.isVisible { window.center() }
         NSApp.activate(ignoringOtherApps: true)
+        if window.isMiniaturized { window.deminiaturize(nil) }
         showWindow(nil)
         window.makeKeyAndOrderFront(nil)
     }
 
     func toggleComposer() {
         guard let window else { return }
-        if window.isVisible {
+        if window.isVisible && !window.isMiniaturized {
             composerViewController.deactivateDirectTouchMode()
             window.orderOut(nil)
         } else {
@@ -455,6 +457,10 @@ final class ComposerPanelController: NSWindowController, NSWindowDelegate {
     }
 
     func windowDidResignKey(_ notification: Notification) {
+        composerViewController.deactivateDirectTouchMode()
+    }
+
+    func windowWillMiniaturize(_ notification: Notification) {
         composerViewController.deactivateDirectTouchMode()
     }
 }

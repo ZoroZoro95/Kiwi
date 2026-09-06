@@ -220,9 +220,20 @@ real workflows are especially valuable while the project is a prototype.
 
 ## Distribution plan
 
-Publish a versioned macOS app ZIP or DMG through GitHub Releases after Developer
-ID signing, Apple notarization, and a fresh-Mac installation test. The repository
-is currently for building from source; no notarized binary is claimed.
+The first distribution will be a free, ad-hoc-signed, **unnotarized** ZIP through
+GitHub Releases, pending packaged-app testing. It targets Apple silicon and
+macOS 13.7 or newer. No public binary release or notarization is claimed yet.
+
+To build the prerelease locally with Xcode installed:
+
+```bash
+bash scripts/package-prerelease.sh
+```
+
+The ZIP and SHA-256 checksum are generated in `dist/`. No paid signing identity
+is required. See [prerelease installation instructions](docs/PRERELEASE.md)
+for security warnings and testing steps. Developer ID signing and notarization
+remain a later option for smoother installation.
 
 ## Project license
 

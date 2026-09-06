@@ -3,6 +3,7 @@ xcuserdata/
 *.xcuserstate
 *.xcscheme
 DerivedData/
+dist/
 build/
 *.hmap
 *.ipa

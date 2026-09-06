@@ -14,6 +14,8 @@ Prior startup, free-glide writing, and heading-layout fixes were manually accept
 - Ink model and composer session tests pass.
 - Build and 26 isolated unit tests passed again on 2026-09-06 (unsigned unit build).
 - Groq request tests use simulated responses, not live inference.
+- Persistent-overlay fix: all 27 unit tests passed on 2026-09-06, including
+  panel configuration regression coverage. Manual app/Space switching pending.
 
 ## Current implementation
 - Groq Settings saves/replaces/removes the API key in macOS Keychain.
@@ -29,13 +31,22 @@ Prior startup, free-glide writing, and heading-layout fixes were manually accept
 ## Exact next task
 MIT license and detailed README/verification record completed. User authorized
 pushing the Free Touch source and documentation to ZoroZoro95/Kiwi on main.
-Next prepare a signed/notarized GitHub Release and validate on a fresh Mac.
-No valid code-signing identity was found in the local check on 2026-09-06.
+User chose free distribution: an ad-hoc-signed, unnotarized Apple-silicon ZIP.
+Packaging script and installation guide are prepared; Release build succeeded.
+Next manually test the packaged app before publishing a GitHub prerelease.
+The user confirmed the packaged app opens, then reported hiding on app switch.
+Disabled panel hide-on-deactivation, enabled all-Spaces overlay and manual
+minimizing/restoration. Capture still releases on focus loss and minimization.
+Next test the rebuilt ZIP: app switch, desktop/full-screen switch, minimize,
+menu-bar restore, and close. Done when visibility follows explicit user actions
+and switching apps restores normal pointer control.
+No valid Developer ID identity was found in the local check on 2026-09-06.
 
 ## Missing / acceptance gate
 Broader handwriting accuracy and latency remain unmeasured. Core interaction
 and equation workflow passed the author's manual checks. Release validation,
-signing/notarization, and fresh-machine installation remain outstanding.
+and fresh-machine installation remain outstanding. Notarization is excluded
+from this free prerelease; users may encounter Gatekeeper warnings.
 MathJax's separate license ships in the app.
 
 ## Decisions

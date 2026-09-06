@@ -3,6 +3,18 @@ import XCTest
 
 final class TrackpadCanvasTests: XCTestCase {
     @MainActor
+    func testComposerPanelStaysVisibleAcrossAppSwitchesAndSupportsMinimizing() throws {
+        let controller = ComposerPanelController()
+        let panel = try XCTUnwrap(controller.window as? NSPanel)
+        XCTAssertFalse(panel.hidesOnDeactivate)
+        XCTAssertEqual(panel.level, .floating)
+        XCTAssertTrue(panel.styleMask.contains(.miniaturizable))
+        XCTAssertTrue(panel.collectionBehavior.contains(.canJoinAllSpaces))
+        XCTAssertTrue(panel.collectionBehavior.contains(.fullScreenAuxiliary))
+        XCTAssertFalse(panel.collectionBehavior.contains(.moveToActiveSpace))
+    }
+
+    @MainActor
     func testEraserGestureRestoresMultipleStrokesWithOneUndo() {
         let canvas = ComposerCanvasView(frame: NSRect(x: 0, y: 0, width: 600, height: 300))
         canvas.trackFinger(at: NSPoint(x: 0.2, y: 0.2), timestamp: 1)
