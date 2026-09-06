@@ -12,7 +12,7 @@ Prior startup, free-glide writing, and heading-layout fixes were manually accept
 
 ## Completed verification
 - Ink model and composer session tests pass.
-- Build and 26 isolated unit tests passed on 2026-09-05.
+- Build and 26 isolated unit tests passed again on 2026-09-06 (unsigned unit build).
 - Groq request tests use simulated responses, not live inference.
 
 ## Current implementation
@@ -27,15 +27,16 @@ Prior startup, free-glide writing, and heading-layout fixes were manually accept
 - Result appears as selectable text and can be copied.
 
 ## Exact next task
-Push source to existing GitHub remote ZoroZoro95/Kiwi. Select a project license,
-then prepare a signed/notarized GitHub Release and validate on a fresh Mac.
+MIT license and detailed README/verification record completed. User authorized
+pushing the Free Touch source and documentation to ZoroZoro95/Kiwi on main.
+Next prepare a signed/notarized GitHub Release and validate on a fresh Mac.
 No valid code-signing identity was found in the local check on 2026-09-06.
 
 ## Missing / acceptance gate
-Broader handwriting accuracy and latency remain unmeasured. Verify the bundled
-MathJax 3.2.2 preview displays superscripts and fractions correctly, and editing
-LaTeX updates both the preview and clipboard. MathJax license ships in the app.
-This is not yet a completed equation MVP.
+Broader handwriting accuracy and latency remain unmeasured. Core interaction
+and equation workflow passed the author's manual checks. Release validation,
+signing/notarization, and fresh-machine installation remain outstanding.
+MathJax's separate license ships in the app.
 
 ## Decisions
 Cloud recognition with each user's own key; no local model or hosted proxy for V1.
